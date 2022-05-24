@@ -12,7 +12,7 @@ using WebBanSach.Data;
 namespace WebBanSach.Migrations
 {
     [DbContext(typeof(dbcontext))]
-    [Migration("20220522165152_v1")]
+    [Migration("20220524050807_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,7 +58,7 @@ namespace WebBanSach.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("MaSachCT")
+                    b.Property<string>("MaSach")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -69,7 +69,7 @@ namespace WebBanSach.Migrations
 
                     b.HasIndex("MaHoaDon");
 
-                    b.HasIndex("MaSachCT");
+                    b.HasIndex("MaSach");
 
                     b.ToTable("HoaDonCT");
                 });
@@ -296,15 +296,15 @@ namespace WebBanSach.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WebBanSach.Models.SachCT", "SachCT")
+                    b.HasOne("WebBanSach.Models.Sach", "Sach")
                         .WithMany("HoaDonCTs")
-                        .HasForeignKey("MaSachCT")
+                        .HasForeignKey("MaSach")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("HoaDon");
 
-                    b.Navigation("SachCT");
+                    b.Navigation("Sach");
                 });
 
             modelBuilder.Entity("WebBanSach.Models.Sach", b =>
@@ -357,12 +357,9 @@ namespace WebBanSach.Migrations
 
             modelBuilder.Entity("WebBanSach.Models.Sach", b =>
                 {
-                    b.Navigation("SachCTs");
-                });
-
-            modelBuilder.Entity("WebBanSach.Models.SachCT", b =>
-                {
                     b.Navigation("HoaDonCTs");
+
+                    b.Navigation("SachCTs");
                 });
 
             modelBuilder.Entity("WebBanSach.Models.TacGia", b =>

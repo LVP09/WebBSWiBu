@@ -19,6 +19,5 @@ namespace WebBanSach.Models
         public virtual Sach Sach { get; set; }
         public virtual TheLoai TheLoai { get; set; }
         public virtual TacGia TacGia { get; set; }
-        public virtual ICollection<HoaDonCT> HoaDonCTs { get; set; }
     }
 }

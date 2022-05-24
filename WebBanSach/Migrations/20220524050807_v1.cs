@@ -133,6 +133,32 @@ namespace WebBanSach.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HoaDonCT",
+                columns: table => new
+                {
+                    ID_HDCT = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaSach = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaHoaDon = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HoaDonCT", x => x.ID_HDCT);
+                    table.ForeignKey(
+                        name: "FK_HoaDonCT_HoaDon_MaHoaDon",
+                        column: x => x.MaHoaDon,
+                        principalTable: "HoaDon",
+                        principalColumn: "ID_HoaDon",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HoaDonCT_Sach_MaSach",
+                        column: x => x.MaSach,
+                        principalTable: "Sach",
+                        principalColumn: "ID_Sach",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SachCT",
                 columns: table => new
                 {
@@ -166,32 +192,6 @@ namespace WebBanSach.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "HoaDonCT",
-                columns: table => new
-                {
-                    ID_HDCT = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MaSachCT = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MaHoaDon = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SoLuong = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HoaDonCT", x => x.ID_HDCT);
-                    table.ForeignKey(
-                        name: "FK_HoaDonCT_HoaDon_MaHoaDon",
-                        column: x => x.MaHoaDon,
-                        principalTable: "HoaDon",
-                        principalColumn: "ID_HoaDon",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_HoaDonCT_SachCT_MaSachCT",
-                        column: x => x.MaSachCT,
-                        principalTable: "SachCT",
-                        principalColumn: "ID_SachCT",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_HoaDon_MaKH",
                 table: "HoaDon",
@@ -203,9 +203,9 @@ namespace WebBanSach.Migrations
                 column: "MaHoaDon");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HoaDonCT_MaSachCT",
+                name: "IX_HoaDonCT_MaSach",
                 table: "HoaDonCT",
-                column: "MaSachCT");
+                column: "MaSach");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sach_MaNXB",
@@ -237,13 +237,10 @@ namespace WebBanSach.Migrations
                 name: "NhanVien");
 
             migrationBuilder.DropTable(
-                name: "HoaDon");
-
-            migrationBuilder.DropTable(
                 name: "SachCT");
 
             migrationBuilder.DropTable(
-                name: "KhachHang");
+                name: "HoaDon");
 
             migrationBuilder.DropTable(
                 name: "Sach");
@@ -253,6 +250,9 @@ namespace WebBanSach.Migrations
 
             migrationBuilder.DropTable(
                 name: "TheLoai");
+
+            migrationBuilder.DropTable(
+                name: "KhachHang");
 
             migrationBuilder.DropTable(
                 name: "NhaXuatBan");

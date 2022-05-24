@@ -8,12 +8,12 @@ namespace WebBanSach.Models
     {
         [Key]
         public string ID_HDCT { get; set; }
-        [ForeignKey("SachCT")]
-        public string MaSachCT { get; set; }
+        [ForeignKey("Sach")]
+        public string MaSach { get; set; }
         [ForeignKey("HoaDon")]
         public string MaHoaDon { get; set; }
         public int SoLuong { get; set; }
         public virtual HoaDon HoaDon { get; set; }
-        public virtual SachCT SachCT { get; set; }
+        public virtual Sach Sach { get; set; }
     }
 }

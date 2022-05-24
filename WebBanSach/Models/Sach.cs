@@ -20,5 +20,6 @@ namespace WebBanSach.Models
         public int TrangThai { get; set; }
         public virtual NhaXuatBan NhaXuatBan { get; set; }
         public virtual ICollection<SachCT> SachCTs { get; set; }
+        public virtual ICollection<HoaDonCT> HoaDonCTs { get; set; }
     }
 }
