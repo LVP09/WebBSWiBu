@@ -12,7 +12,7 @@ using WebBanSach.Data;
 namespace WebBanSach.Migrations
 {
     [DbContext(typeof(dbcontext))]
-    [Migration("20220524050807_v1")]
+    [Migration("20220524054821_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -175,10 +175,6 @@ namespace WebBanSach.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MaNXB")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("NgayNhap")
                         .HasColumnType("datetime2");
 
@@ -200,8 +196,6 @@ namespace WebBanSach.Migrations
 
                     b.HasKey("ID_Sach");
 
-                    b.HasIndex("MaNXB");
-
                     b.ToTable("Sach");
                 });
 
@@ -212,6 +206,10 @@ namespace WebBanSach.Migrations
 
                     b.Property<double>("Gia")
                         .HasColumnType("float");
+
+                    b.Property<string>("MaNXB")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MaSach")
                         .IsRequired()
@@ -229,6 +227,8 @@ namespace WebBanSach.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID_SachCT");
+
+                    b.HasIndex("MaNXB");
 
                     b.HasIndex("MaSach");
 
@@ -307,19 +307,14 @@ namespace WebBanSach.Migrations
                     b.Navigation("Sach");
                 });
 
-            modelBuilder.Entity("WebBanSach.Models.Sach", b =>
+            modelBuilder.Entity("WebBanSach.Models.SachCT", b =>
                 {
                     b.HasOne("WebBanSach.Models.NhaXuatBan", "NhaXuatBan")
-                        .WithMany("Sachs")
+                        .WithMany("SachCTs")
                         .HasForeignKey("MaNXB")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("NhaXuatBan");
-                });
-
-            modelBuilder.Entity("WebBanSach.Models.SachCT", b =>
-                {
                     b.HasOne("WebBanSach.Models.Sach", "Sach")
                         .WithMany("SachCTs")
                         .HasForeignKey("MaSach")
@@ -338,6 +333,8 @@ namespace WebBanSach.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("NhaXuatBan");
+
                     b.Navigation("Sach");
 
                     b.Navigation("TacGia");
@@ -352,7 +349,7 @@ namespace WebBanSach.Migrations
 
             modelBuilder.Entity("WebBanSach.Models.NhaXuatBan", b =>
                 {
-                    b.Navigation("Sachs");
+                    b.Navigation("SachCTs");
                 });
 
             modelBuilder.Entity("WebBanSach.Models.Sach", b =>

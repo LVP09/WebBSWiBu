@@ -14,10 +14,13 @@ namespace WebBanSach.Models
         public string MaTheLoai { get; set; }
         [ForeignKey("TacGia")]
         public string MaTacGia { get; set; }
+        [ForeignKey("NhaXuatBan")]
+        public string MaNXB { get; set; }
         public double Gia { get; set; }
         public int TrangThai { get; set; }
         public virtual Sach Sach { get; set; }
         public virtual TheLoai TheLoai { get; set; }
         public virtual TacGia TacGia { get; set; }
+        public virtual NhaXuatBan NhaXuatBan { get; set; }
     }
 }

@@ -60,6 +60,24 @@ namespace WebBanSach.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sach",
+                columns: table => new
+                {
+                    ID_Sach = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TenSach = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SoTrang = table.Column<int>(type: "int", nullable: false),
+                    TaiBan = table.Column<int>(type: "int", nullable: false),
+                    NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false),
+                    TrangThai = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sach", x => x.ID_Sach);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TacGia",
                 columns: table => new
                 {
@@ -108,27 +126,43 @@ namespace WebBanSach.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sach",
+                name: "SachCT",
                 columns: table => new
                 {
-                    ID_Sach = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ID_SachCT = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaSach = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaTheLoai = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaTacGia = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MaNXB = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TenSach = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SoTrang = table.Column<int>(type: "int", nullable: false),
-                    TaiBan = table.Column<int>(type: "int", nullable: false),
-                    NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SoLuong = table.Column<int>(type: "int", nullable: false),
+                    Gia = table.Column<double>(type: "float", nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sach", x => x.ID_Sach);
+                    table.PrimaryKey("PK_SachCT", x => x.ID_SachCT);
                     table.ForeignKey(
-                        name: "FK_Sach_NhaXuatBan_MaNXB",
+                        name: "FK_SachCT_NhaXuatBan_MaNXB",
                         column: x => x.MaNXB,
                         principalTable: "NhaXuatBan",
                         principalColumn: "ID_NXB",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SachCT_Sach_MaSach",
+                        column: x => x.MaSach,
+                        principalTable: "Sach",
+                        principalColumn: "ID_Sach",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SachCT_TacGia_MaTacGia",
+                        column: x => x.MaTacGia,
+                        principalTable: "TacGia",
+                        principalColumn: "ID_TacGia",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SachCT_TheLoai_MaTheLoai",
+                        column: x => x.MaTheLoai,
+                        principalTable: "TheLoai",
+                        principalColumn: "ID_TheLoai",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -158,40 +192,6 @@ namespace WebBanSach.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "SachCT",
-                columns: table => new
-                {
-                    ID_SachCT = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MaSach = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MaTheLoai = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MaTacGia = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Gia = table.Column<double>(type: "float", nullable: false),
-                    TrangThai = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SachCT", x => x.ID_SachCT);
-                    table.ForeignKey(
-                        name: "FK_SachCT_Sach_MaSach",
-                        column: x => x.MaSach,
-                        principalTable: "Sach",
-                        principalColumn: "ID_Sach",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SachCT_TacGia_MaTacGia",
-                        column: x => x.MaTacGia,
-                        principalTable: "TacGia",
-                        principalColumn: "ID_TacGia",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SachCT_TheLoai_MaTheLoai",
-                        column: x => x.MaTheLoai,
-                        principalTable: "TheLoai",
-                        principalColumn: "ID_TheLoai",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_HoaDon_MaKH",
                 table: "HoaDon",
@@ -208,8 +208,8 @@ namespace WebBanSach.Migrations
                 column: "MaSach");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sach_MaNXB",
-                table: "Sach",
+                name: "IX_SachCT_MaNXB",
+                table: "SachCT",
                 column: "MaNXB");
 
             migrationBuilder.CreateIndex(
@@ -243,6 +243,9 @@ namespace WebBanSach.Migrations
                 name: "HoaDon");
 
             migrationBuilder.DropTable(
+                name: "NhaXuatBan");
+
+            migrationBuilder.DropTable(
                 name: "Sach");
 
             migrationBuilder.DropTable(
@@ -253,9 +256,6 @@ namespace WebBanSach.Migrations
 
             migrationBuilder.DropTable(
                 name: "KhachHang");
-
-            migrationBuilder.DropTable(
-                name: "NhaXuatBan");
         }
     }
 }
