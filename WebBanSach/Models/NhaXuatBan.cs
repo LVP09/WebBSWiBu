@@ -11,6 +11,6 @@ namespace WebBanSach.Models
         public string ID_NXB { get; set; }
         public string TenXuatBan { get; set; }
         public int TrangThai { get; set; }
-        public virtual ICollection<SachCT> SachCTs { get; set; }
+        public virtual ICollection<Sach> Sachs { get; set; }
     }
 }
