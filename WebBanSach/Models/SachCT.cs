@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebBanSach.Models
@@ -19,5 +20,6 @@ namespace WebBanSach.Models
         public virtual Sach Sach { get; set; }
         public virtual TheLoai TheLoai { get; set; }
         public virtual TacGia TacGia { get; set; }
+       
     }
 }
