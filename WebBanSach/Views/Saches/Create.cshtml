@@ -1,0 +1,96 @@
+﻿@using WebBanSach.Models;
+@model dynamic
+
+
+
+<h1>Create</h1>
+
+<h4>Sach</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            @foreach (Sach sach in Model.Sach)
+            {
+                
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <div class="form-group">
+                <label asp-for="@sach.MaNXB" class="control-label"></label>
+                <select asp-for="@sach.MaNXB" class ="form-control" asp-items="@ViewBag.IDNXB"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="@sach.TenSach" class="control-label"></label>
+                <input asp-for="@sach.TenSach" class="form-control" />
+                <span asp-validation-for="@sach.TenSach" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@sach.HinhAnh" class="control-label"></label>
+                <input asp-for="@sach.HinhAnh" class="form-control" />
+                <span asp-validation-for="@sach.HinhAnh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@sach.SoTrang" class="control-label"></label>
+                <input asp-for="@sach.SoTrang" class="form-control" />
+                <span asp-validation-for="@sach.SoTrang" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@sach.TaiBan" class="control-label"></label>
+                <input asp-for="@sach.TaiBan" class="form-control" />
+                <span asp-validation-for="@sach.TaiBan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@sach.NgayNhap" class="control-label"></label>
+                <input asp-for="@sach.NgayNhap" class="form-control" />
+                <span asp-validation-for="@sach.NgayNhap" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@sach.SoLuong" class="control-label"></label>
+                <input asp-for="@sach.SoLuong" class="form-control" />
+                <span asp-validation-for="@sach.SoLuong" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@sach.TrangThai" class="control-label"></label>
+                <input asp-for="@sach.TrangThai" class="form-control" />
+                <span asp-validation-for="@sach.TrangThai" class="text-danger"></span>
+            </div>
+            }
+          @*  Chi tiết sách*@
+            @foreach (SachCT sachCT in Model.SachCT)
+            {
+                <div class="form-group">
+                <label asp-for="@sachCT.MaTacGia" class="control-label"></label>
+                <select asp-for="@sachCT.MaTacGia" class ="form-control" asp-items="@ViewBag.IDTG"></select>
+                 </div>
+                   <div class="form-group">
+                <label asp-for="@sachCT.MaTheLoai" class="control-label"></label>
+                <select asp-for="@sachCT.MaTheLoai" class ="form-control" asp-items="@ViewBag.IDTL"></select>
+
+                 </div>
+                 <div class="form-group">
+                <label asp-for="@sachCT.Gia" class="control-label"></label>
+                <input asp-for="@sachCT.Gia" class="form-control" />
+                <span asp-validation-for="@sachCT.Gia" class="text-danger"></span>
+                 </div>
+                  <div class="form-group">
+                <label asp-for="@sachCT.TrangThai" class="control-label"></label>
+                <input asp-for="@sachCT.TrangThai" class="form-control" />
+                <span asp-validation-for="@sachCT.TrangThai" class="text-danger"></span>
+            </div>
+
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
