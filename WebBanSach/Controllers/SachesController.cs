@@ -80,10 +80,6 @@ namespace WebBanSach.Views
         }
         public IActionResult Create()
         {
- 
-            
-
-            
             MultiDropDownListViewModel model = new();
             ViewBag.IDTL =  model.ItemList = GetTL().Select(x => new SelectListItem { Text = x.TenTL, Value = x.ID_TheLoai.ToString() }).ToList();
         
