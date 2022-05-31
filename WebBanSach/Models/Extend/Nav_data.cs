@@ -12,8 +12,7 @@ namespace WebBanSach.Models.Extend
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            //ViewBag.User = HttpContext.Session.GetString("user");
-            //ViewBag.NhanVien = HttpContext.Session.GetString("nv");
+            ViewBag.User = User.Identity.Name;
             return View("NavData");
         }
     }

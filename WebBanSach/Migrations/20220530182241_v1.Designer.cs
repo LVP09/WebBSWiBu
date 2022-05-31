@@ -12,7 +12,7 @@ using WebBanSach.Data;
 namespace WebBanSach.Migrations
 {
     [DbContext(typeof(dbcontext))]
-    [Migration("20220525043306_v1")]
+    [Migration("20220530182241_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,40 @@ namespace WebBanSach.Migrations
                     b.ToTable("KhachHang");
                 });
 
+            modelBuilder.Entity("WebBanSach.Models.Kho", b =>
+                {
+                    b.Property<string>("ID_Kho")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("GiaNhap")
+                        .HasColumnType("float");
+
+                    b.Property<string>("MaNhanVien")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("MaSach")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("NgayNhap")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SoLuong")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrangThai")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID_Kho");
+
+                    b.HasIndex("MaNhanVien");
+
+                    b.HasIndex("MaSach");
+
+                    b.ToTable("Khos");
+                });
+
             modelBuilder.Entity("WebBanSach.Models.NhanVien", b =>
                 {
                     b.Property<string>("ID_NhanVien")
@@ -120,6 +154,10 @@ namespace WebBanSach.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HinhAnh")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -171,6 +209,9 @@ namespace WebBanSach.Migrations
                     b.Property<string>("ID_Sach")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<double>("Gia")
+                        .HasColumnType("float");
+
                     b.Property<string>("HinhAnh")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -209,9 +250,6 @@ namespace WebBanSach.Migrations
                 {
                     b.Property<string>("ID_SachCT")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Gia")
-                        .HasColumnType("float");
 
                     b.Property<string>("MaSach")
                         .IsRequired()
@@ -307,6 +345,25 @@ namespace WebBanSach.Migrations
                     b.Navigation("Sach");
                 });
 
+            modelBuilder.Entity("WebBanSach.Models.Kho", b =>
+                {
+                    b.HasOne("WebBanSach.Models.NhanVien", "NhanVien")
+                        .WithMany("Khos")
+                        .HasForeignKey("MaNhanVien")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebBanSach.Models.Sach", "Sach")
+                        .WithMany("Khos")
+                        .HasForeignKey("MaSach")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("NhanVien");
+
+                    b.Navigation("Sach");
+                });
+
             modelBuilder.Entity("WebBanSach.Models.Sach", b =>
                 {
                     b.HasOne("WebBanSach.Models.NhaXuatBan", "NhaXuatBan")
@@ -350,6 +407,11 @@ namespace WebBanSach.Migrations
                     b.Navigation("HoaDons");
                 });
 
+            modelBuilder.Entity("WebBanSach.Models.NhanVien", b =>
+                {
+                    b.Navigation("Khos");
+                });
+
             modelBuilder.Entity("WebBanSach.Models.NhaXuatBan", b =>
                 {
                     b.Navigation("Sachs");
@@ -358,6 +420,8 @@ namespace WebBanSach.Migrations
             modelBuilder.Entity("WebBanSach.Models.Sach", b =>
                 {
                     b.Navigation("HoaDonCTs");
+
+                    b.Navigation("Khos");
 
                     b.Navigation("SachCTs");
                 });

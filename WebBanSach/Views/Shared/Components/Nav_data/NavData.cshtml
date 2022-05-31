@@ -16,13 +16,41 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav d-flex flex-row-reverse">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle show" data-bs-toggle="dropdown">Đăng nhập</a>
-                        <div class="dropdown-menu show">
-                            <a class="dropdown-item" asp-controller="Login" asp-action="KhachHangLogin">Người dùng</a>
-                            <a class="dropdown-item" href="#">Nhân viên</a>
-                        </div>
-                    </li>
+                    @{
+                        bool nv = true;
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("KhachHang"))
+                            {
+                                <li class="nav-item">Khách: @ViewBag.User</li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">Nhân viên: @ViewBag.User</li>
+                            }
+                            if (User.IsInRole("KhachHang"))
+                            {
+                                nv = false;
+                            }
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Đăng xuất</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Login" asp-action="ChangePw" asp-route-nv="@nv">Đổi mật khẩu</a>
+                                    <a class="dropdown-item" asp-controller="Login" asp-action="Logout">Đăng xuất</a>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Đăng nhập</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Login" asp-action="Login" asp-route-nv="false">Người dùng</a>
+                                    <a class="dropdown-item" asp-controller="Login" asp-action="Login" asp-route-nv="true">Nhân viên</a>
+                                </div>
+                            </li>
+                        }
+                    }
                 </ul>
             </div>
         </div>

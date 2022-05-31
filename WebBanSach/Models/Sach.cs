@@ -15,11 +15,13 @@ namespace WebBanSach.Models
         public string HinhAnh { get; set; }
         public int SoTrang { get; set; }
         public int TaiBan { get; set; }
+        public double Gia { get; set; }
         public DateTime NgayNhap { get; set; }
         public int SoLuong { get; set; }
         public int TrangThai { get; set; }
         public NhaXuatBan NhaXuatBan { get; set; }
         public virtual ICollection<SachCT> SachCTs { get; set; }
         public virtual ICollection<HoaDonCT> HoaDonCTs { get; set; }
+        public virtual ICollection<Kho> Khos { get; set; }
     }
 }

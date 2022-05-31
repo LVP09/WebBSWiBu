@@ -36,6 +36,7 @@ namespace WebBanSach.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SDT = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MatKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quyen = table.Column<bool>(type: "bit", nullable: false),
@@ -117,6 +118,7 @@ namespace WebBanSach.Migrations
                     HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SoTrang = table.Column<int>(type: "int", nullable: false),
                     TaiBan = table.Column<int>(type: "int", nullable: false),
+                    Gia = table.Column<double>(type: "float", nullable: false),
                     NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: false)
@@ -159,6 +161,35 @@ namespace WebBanSach.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Khos",
+                columns: table => new
+                {
+                    ID_Kho = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaNhanVien = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaSach = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false),
+                    NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GiaNhap = table.Column<double>(type: "float", nullable: false),
+                    TrangThai = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Khos", x => x.ID_Kho);
+                    table.ForeignKey(
+                        name: "FK_Khos_NhanVien_MaNhanVien",
+                        column: x => x.MaNhanVien,
+                        principalTable: "NhanVien",
+                        principalColumn: "ID_NhanVien",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Khos_Sach_MaSach",
+                        column: x => x.MaSach,
+                        principalTable: "Sach",
+                        principalColumn: "ID_Sach",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SachCT",
                 columns: table => new
                 {
@@ -166,7 +197,6 @@ namespace WebBanSach.Migrations
                     MaSach = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MaTheLoai = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MaTacGia = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Gia = table.Column<double>(type: "float", nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -208,6 +238,16 @@ namespace WebBanSach.Migrations
                 column: "MaSach");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Khos_MaNhanVien",
+                table: "Khos",
+                column: "MaNhanVien");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Khos_MaSach",
+                table: "Khos",
+                column: "MaSach");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sach_MaNXB",
                 table: "Sach",
                 column: "MaNXB");
@@ -234,13 +274,16 @@ namespace WebBanSach.Migrations
                 name: "HoaDonCT");
 
             migrationBuilder.DropTable(
-                name: "NhanVien");
+                name: "Khos");
 
             migrationBuilder.DropTable(
                 name: "SachCT");
 
             migrationBuilder.DropTable(
                 name: "HoaDon");
+
+            migrationBuilder.DropTable(
+                name: "NhanVien");
 
             migrationBuilder.DropTable(
                 name: "Sach");

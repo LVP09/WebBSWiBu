@@ -24,6 +24,7 @@ namespace WebBanSach.Data
         public DbSet<Sach> Sachs { get; set; }
         public DbSet<SachCT> SachCTs { get; set; }
         public DbSet<TacGia> TacGias { get; set; }
-        public DbSet<TheLoai> TheLoais { get; set; }
+        public DbSet<TheLoai> TheLoais { get; set;}
+        public DbSet<Kho> Khos { get; set; }
     }
 }

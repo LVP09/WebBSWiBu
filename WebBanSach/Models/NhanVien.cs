@@ -12,9 +12,11 @@ namespace WebBanSach.Models
         public string Email { get; set; }
         public string SDT { get; set; }
         public string DiaChi { get; set; }
+        public string HinhAnh { get; set; }
         public DateTime NgaySinh { get; set; }
         public string MatKhau { get; set; }
         public bool Quyen { get; set; }
         public int TrangThai { get; set; }
+        public virtual ICollection<Kho> Khos { get; set; }
     }
 }
