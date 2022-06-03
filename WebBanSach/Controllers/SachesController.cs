@@ -95,15 +95,13 @@ namespace WebBanSach.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TenSach,MaNXB,HinhAnh,SoTrang,TaiBan,NgayNhap,SoLuong,Gia")] Sach sach, string[] SelectedIdsTL, string[] SelectedIdsTG,double idGia)
+        public async Task<IActionResult> Create([Bind("ID_Sach,MaNXB,TenSach,HinhAnh,SoTrang,TaiBan,Gia,NgayNhap,SoLuong,TrangThai")] Sach sach, string[] SelectedIdsTL, string[] SelectedIdsTG)
         {
-           
             if (sach != null)
             {
                 sach.ID_Sach = Guid.NewGuid().ToString();
                 sach.TrangThai = 1;
-                sach.NgayNhap = aDateTime = DateTime.Now;
-                sach.Gia = idGia;
+                sach.NgayNhap = DateTime.Now;
                 _context.Add(sach);
                 foreach (var tgx in SelectedIdsTG)
                 {
@@ -126,7 +124,7 @@ namespace WebBanSach.Views
             ViewBag.IDNXB = new SelectList(_context.NhaXuatBans, "ID_NXB", "TenXuatBan", sach.MaNXB);
            
 
-            return RedirectToAction("Index");
+            return View(sach);
         }
 
         // GET: Saches/Edit/5
@@ -134,7 +132,7 @@ namespace WebBanSach.Views
         {
             if (id == null || _context.Sachs == null)
             {
-                return NotFound();
+                return Content("Nope");
             }
 
             var sach = await _context.Sachs.FindAsync(id);
@@ -142,7 +140,10 @@ namespace WebBanSach.Views
             {
                 return NotFound();
             }
-            ViewData["MaNXB"] = new SelectList(_context.NhaXuatBans, "ID_NXB", "ID_NXB", sach.MaNXB);
+            MultiDropDownListViewModel model = new();
+            ViewBag.IDTL = model.ItemList = GetTL().Select(x => new SelectListItem { Text = x.TenTL, Value = x.ID_TheLoai.ToString(), Selected = _context.SachCTs.Where(s => s.MaSach == sach.ID_Sach).ToList().Exists(s => s.MaTheLoai == x.ID_TheLoai) }).ToList();
+            ViewBag.IDNXB = new SelectList(_context.NhaXuatBans, "ID_NXB", "TenXuatBan",sach.MaNXB);
+            ViewBag.IDTG = model.ItemList = GetTG().Select(x => new SelectListItem { Text = x.HoVaTen, Value = x.ID_TacGia.ToString(), Selected = _context.SachCTs.Where(s => s.MaSach == sach.ID_Sach).ToList().Exists(s => s.MaTacGia == x.ID_TacGia) }).ToList();
             return View(sach);
         }
 
@@ -151,17 +152,39 @@ namespace WebBanSach.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID_Sach,MaNXB,TenSach,HinhAnh,SoTrang,TaiBan,NgayNhap,SoLuong,TrangThai")] Sach sach)
+        public async Task<IActionResult> Edit(string id, /*[Bind("ID_Sach,MaNXB,TenSach,HinhAnh,SoTrang,TaiBan,Gia,NgayNhap,SoLuong,TrangThai")] */Sach sach, string[] SelectedIdsTL, string[] SelectedIdsTG)
         {
             if (id != sach.ID_Sach)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
-            {
+            if (sach != null)
+            {             
                 try
                 {
+                    foreach (var item in SelectedIdsTG)
+                    {
+                        foreach (var item3 in SelectedIdsTL)
+                        {
+                            if (!_context.SachCTs.Where(c => c.MaSach == sach.ID_Sach).ToList().Exists(c => c.MaTacGia == item && c.MaTheLoai == item3))
+                            {
+                                SachCT sachCT = new SachCT();
+                                sachCT.ID_SachCT = Guid.NewGuid().ToString();
+                                sachCT.MaTacGia = item;
+                                sachCT.MaTheLoai = item3;
+                                sachCT.TrangThai = 1;
+                                sachCT.MaSach = sach.ID_Sach;
+                                _context.Add(sachCT);
+                            }
+                        }
+                    }
+                    foreach (var item2 in _context.SachCTs.Where(c => c.MaSach == sach.ID_Sach).ToList())
+                    {
+                        if (!SelectedIdsTG.Contains(item2.MaTacGia) || !SelectedIdsTL.Contains(item2.MaTheLoai))
+                        {
+                            _context.Remove(item2);
+                        }
+                    }
                     _context.Update(sach);
                     await _context.SaveChangesAsync();
                 }
@@ -178,7 +201,7 @@ namespace WebBanSach.Views
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaNXB"] = new SelectList(_context.NhaXuatBans, "ID_NXB", "ID_NXB", sach.MaNXB);
+            ViewBag.IDNXB = new SelectList(_context.NhaXuatBans, "ID_NXB", "TenXuatBan", sach.MaNXB);
             return View(sach);
         }
 

@@ -1,0 +1,43 @@
+﻿@model WebBanSach.Models.Sach
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<main class="col=md-6">
+    <article class="produst-info-aside">
+        <h2 class="title_box mt-3">@Model.TenSach</h2>
+        <img class="product_img col-sm-2" src="~/img/@Model.HinhAnh"/>
+       @* <div class="rating-wrap my-3">
+            <ul class="rating-stars">
+                <li style="with:80%" class="stars-active">
+                    <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </li>
+                <li>
+                    <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </li>
+            </ul>
+            <small class="label-rating text-muted">123 review</small>
+        </div>*@
+       <ul class="col-sm-8">
+              <li>Giá : @Model.Gia</li>
+              <li>Số trang :@Model.SoTrang</li>
+              <li>Tái bản: @Model.TaiBan</li>
+              @foreach (var item in ViewBag.TacGia)
+              {
+                   <li>Tái bản: @item.HoVaTen</li>
+              }
+              
+              <li>Số lượng<span class="badge bg-danger">@Model.SoLuong</span></li>
+              
+        </ul>
+        <button class="btn btn-danger">Mua hàng</button>
+    </article>
+</main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>

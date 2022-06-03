@@ -1,0 +1,71 @@
+﻿@model List<WebBanSach.Models.Sach>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h2>Đây là trang chủ</h2>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>ProdustBook</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!--[if IE 6]>
+    <link rel="stylesheet" type="text/css" href="iecss.css" />
+    <![endif]-->
+    <script src="~/js/boxOver.js"></script>
+</head>
+<body>
+    <div id="main_container">
+        <div id="header">
+            <div class="big_banner"> <a href="#"><img src="~/img/bannerbook.jpg" height="200px" width="990px" alt="" border="0" /></a> </div>
+            <div class="top_right">
+                <div class="languages">
+                    <div class="lang_text" ><a asp-controller="" asp-action=""></a></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check" viewBox="0 0 16 16">
+                        <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                    </svg>
+                    <button class="Create_card btn-info text-white"  id="#"><a asp-controller="" asp-action="">Tạo giỏ hàng</a></button>
+                </div>
+            </div>
+
+        </div>
+        <div id="main_content">
+            <!-- end of menu tab -->
+            <div class="left_content">
+                <div class="title_box">Danh Mục</div>
+                <ul class="left_menu">
+                    <li class="odd"><a href="#">Truyện tranh</a></li>
+                    <li class="even"><a href="#">Tiểu Thuyết</a></li>
+                    <li class="odd"><a href="#">Sách về tài chính kinh doanh</a></li>
+                    <li class="odd"><a href="#">Tự thuật</a></li>
+                </ul>
+            </div>
+            <!-- end of main content -->
+            <div class="center_content">
+                @foreach (var item in Model)
+                {
+                    <div class="prod_box">
+                        <div class="center_prod_box">
+                            <div class="product_title"><a href="#">@item.TenSach</a></div>
+                           
+                            <a asp-action="DetailBook" asp-route-id=@item.ID_Sach>
+                                <img src="~/img/@item.HinhAnh" width="200px" height="180px" class="card-img-top" alt="@item.TenSach">
+                            </a>
+                            @*@Html.ActionLink(@item.MaSach,"Privacy","Home",new{@id=item.MaSach},null)*@
+                            @*<div class="prod_price"><span class="price">Giá: @item.Gia</span></div>*@
+                        </div>
+                            @*<div class="mb-3">
+                                <a asp-action="DetailProdust" asp-controller="Home "asp-route-id="" class="btn bg-success form-control text-light">Add Cart</a>
+                            </div*@>
+                    </div>
+                }
+                
+            </div>
+        </div>
+    </div>
+    <!-- end of main_container -->
+</body>
+</html>

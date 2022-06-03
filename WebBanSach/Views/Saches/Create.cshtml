@@ -2,8 +2,6 @@
 
 @{
     ViewData["Title"] = "Create";
-    
-   
 }
 
 <h1>Create</h1>
@@ -13,15 +11,15 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="TenSach" class="control-label"></label>
                 <input asp-for="TenSach" class="form-control" />
                 <span asp-validation-for="TenSach" class="text-danger"></span>
             </div>
-             <div class="form-group">
+            <div class="form-group">
                 <label asp-for="MaNXB" class="control-label"></label>
-                <select asp-for="MaNXB" class ="form-control" asp-items="ViewBag.IDNXB"></select>
+                <select asp-for="MaNXB" class="form-control" asp-items="ViewBag.IDNXB"></select>
             </div>
             <div class="form-group">
                 <label asp-for="HinhAnh" class="control-label"></label>
@@ -43,31 +41,25 @@
                 <input asp-for="SoLuong" class="form-control" />
                 <span asp-validation-for="SoLuong" class="text-danger"></span>
             </div>
-             <div class="form-group">
+            <div class="form-group">
                 <label asp-for="Gia" class="control-label"></label>
                 <input asp-for="Gia" class="form-control" />
                 <span asp-validation-for="Gia" class="text-danger"></span>
-           </div>
+            </div>
             <div class="form-group">
-                <label asp-for="TrangThai" class="control-label"></label>
-                <input asp-for="TrangThai" class="form-control" />
-                <span asp-validation-for="TrangThai" class="text-danger"></span>
-           </div>
-             <div class="form-group">
-                   <label class="control-label"> Tác Giả</label>
-              <select id="dropDownList-example" name="SelectedIdsTG"
-                                asp-items="@ViewBag.IDTG" multiple class="form-control">                           
-              </select>
-              </div>
-              <div class="form-group">
-                    <label class="control-label"> Thể Loại</label>
-             <select id="dropDownList-example" name="SelectedIdsTL"
-                                asp-items="@ViewBag.IDTL" multiple class="form-control">                            
-                            </select>
-              </div>
-            
-          
-           
+                <label class="control-label"> Tác Giả</label>
+                <select id="dropDownList-example" name="SelectedIdsTG"
+                        asp-items="@ViewBag.IDTG" multiple class="form-control">
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label"> Thể Loại</label>
+                <select id="dropDownList-example2" name="SelectedIdsTL"
+                        asp-items="@ViewBag.IDTL" multiple class="form-control">
+                </select>
+            </div>
+            <span></span>
+             <span></span>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -96,5 +88,13 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $(function(){
+        $("#dropDownList-example").chosen();
+        $("#dropDownList-example2").chosen();
+    });
+</script>
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

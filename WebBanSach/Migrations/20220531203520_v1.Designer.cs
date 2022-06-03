@@ -12,7 +12,7 @@ using WebBanSach.Data;
 namespace WebBanSach.Migrations
 {
     [DbContext(typeof(dbcontext))]
-    [Migration("20220530182241_v1")]
+    [Migration("20220531203520_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
