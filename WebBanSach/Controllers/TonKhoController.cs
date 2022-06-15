@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebBanSach.Data;
 using WebBanSach.ModelGhep;
 using WebBanSach.Models;
 
 namespace WebBanSach.Controllers
 {
+    [Authorize(Policy = "StaffOnly")]
     public class TonKhoController : Controller
     {
         public readonly dbcontext _dbcontext;

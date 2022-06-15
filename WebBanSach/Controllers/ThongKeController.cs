@@ -3,10 +3,11 @@ using WebBanSach.ModelGhep;
 using WebBanSach.Models;
 using WebBanSach.Data;
 using ClosedXML.Excel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebBanSach.Controllers
 {
-   
+    [Authorize(Policy = "StaffOnly")]
     public class ThongKeController : Controller
     {
         public dbcontext _dbcontext;

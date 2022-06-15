@@ -57,11 +57,19 @@ namespace WebBanSach.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID_TheLoai,TenTL")] TheLoai theLoai)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(theLoai);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(theLoai);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("Error", "Something went wrong");
+                return View(theLoai);
             }
             return View(theLoai);
         }
@@ -101,7 +109,7 @@ namespace WebBanSach.Controllers
                     _context.Update(theLoai);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException)
                 {
                     if (!TheLoaiExists(theLoai.ID_TheLoai))
                     {
@@ -109,7 +117,8 @@ namespace WebBanSach.Controllers
                     }
                     else
                     {
-                        throw;
+                        ModelState.AddModelError("Error", "Something went wrong");
+                        return View(theLoai);
                     }
                 }
                 return RedirectToAction(nameof(Index));

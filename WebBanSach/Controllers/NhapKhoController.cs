@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using WebBanSach.Models;
 using WebBanSach.ModelGhep;
 using WebBanSach.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebBanSach.Controllers
 {
+    [Authorize(Policy = "StaffOnly")]
     public class NhapKhoController : Controller
     {
         public readonly dbcontext _dbcontext;

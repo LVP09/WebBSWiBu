@@ -15,7 +15,7 @@ namespace WebBanSach.Migrations
                 {
                     ID_KhachHang = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HoVaTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SDT = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -33,7 +33,7 @@ namespace WebBanSach.Migrations
                 {
                     ID_NhanVien = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HoVaTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SDT = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -52,7 +52,7 @@ namespace WebBanSach.Migrations
                 columns: table => new
                 {
                     ID_NXB = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TenXuatBan = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenXuatBan = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -238,6 +238,12 @@ namespace WebBanSach.Migrations
                 column: "MaSach");
 
             migrationBuilder.CreateIndex(
+                name: "IX_KhachHang_Email",
+                table: "KhachHang",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Khos_MaNhanVien",
                 table: "Khos",
                 column: "MaNhanVien");
@@ -246,6 +252,18 @@ namespace WebBanSach.Migrations
                 name: "IX_Khos_MaSach",
                 table: "Khos",
                 column: "MaSach");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NhanVien_Email",
+                table: "NhanVien",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NhaXuatBan_TenXuatBan",
+                table: "NhaXuatBan",
+                column: "TenXuatBan",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sach_MaNXB",
