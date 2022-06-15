@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
 using System.Diagnostics;
+using System.Security.Claims;
 using WebBanSach.Data;
 using WebBanSach.Models;
 
 namespace WebBanSach.Controllers
 {
-    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly dbcontext _DB;
-
         public HomeController(ILogger<HomeController> logger, dbcontext context)
         {
             _logger = logger;
@@ -23,10 +23,50 @@ namespace WebBanSach.Controllers
         {
             return View();
         }
-        public IActionResult TrangChu()
+        public ActionResult TheLoai(string idTl)
         {
-            var lstProdust = _DB.Sachs.ToList();
-            return View(lstProdust);
+            List<SachCT> FiterTL = new List<SachCT>();
+            FiterTL = _DB.SachCTs.Where(c => c.MaTheLoai == idTl).ToList();//lọc theo thể loại
+            List<Sach> lstSach = new List<Sach>();
+            foreach (var item in FiterTL)
+            {
+                Sach Sachs = new Sach();
+                Sachs = _DB.Sachs.First(c => c.ID_Sach == item.MaSach);
+                lstSach.Add(Sachs);
+            }
+            ViewBag.NXB = _DB.NhaXuatBans.ToList();
+            ViewBag.SachTL = lstSach;
+            ViewBag.TheLoai = _DB.TheLoais.ToList();
+            return View(FiterTL);
+        }
+        public IActionResult TrangChu(string currentFilter, string NameBook, int? page)
+        {
+            List<TheLoai> lstTl = new List<TheLoai>();
+            List<Sach> LstSeachbook = new List<Sach>();
+            var lstProdust = _DB.Sachs.ToList().Where(c => c.SoLuong > 0 && c.TrangThai == 1);// List ALL sách
+            //FiterTL = _DB.SachCTs.Where(c => c.MaTheLoai == idTL).ToList();//lọc theo thể loại
+            LstSeachbook = _DB.Sachs.Where(c => c.TenSach.Contains(NameBook)).ToList();// Tìm kiếm theo tên sách
+            lstTl = _DB.TheLoais.ToList();// list thể loại
+            List<Sach> lst = new List<Sach>();
+            int pagesize = 4;
+            int PageNumber = (page ?? 1);
+            ViewBag.TheLoai = lstTl;
+
+            if (NameBook != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                NameBook = currentFilter;
+            }
+            if (!string.IsNullOrEmpty(NameBook))
+            {
+                return View(LstSeachbook.ToPagedList(PageNumber, pagesize));
+            }
+            ViewBag.currentFilter = NameBook;
+            ViewBag.NXB = _DB.NhaXuatBans.ToList();
+            return View(lstProdust.ToPagedList(PageNumber, pagesize));
         }
         public IActionResult DetailBook(string id)
         {
@@ -43,13 +83,20 @@ namespace WebBanSach.Controllers
                 theLoai = _DB.TheLoais.First(c=>c.ID_TheLoai == item.MaTheLoai);
                 lstTheLoai.Add(theLoai);
             }
+            ViewBag.NXB = _DB.NhaXuatBans.ToList();
             ViewBag.TacGia = lstTacGia;
             ViewBag.TheLoai = lstTheLoai;
             var DetailSP = _DB.Sachs.Where(c => c.ID_Sach == id).FirstOrDefault();
             var DetailSPCT = _DB.SachCTs.Where(c => c.MaSach == id).FirstOrDefault();  
             return View(DetailSP);
         }
-        [Authorize(Policy ="AdminOnly")]
+
+        public IActionResult Qllogin()
+        {
+            return RedirectToAction("Login", "Login");
+        }
+
+        [Authorize(Policy ="NoStaffAllowed")]
         public IActionResult Privacy()
         {
             return View();

@@ -13,28 +13,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TenSach)
+                Tên sách
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HinhAnh)
+                Hình ảnh
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SoTrang)
+                Số trang
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TaiBan)
+                Tái bản
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NgayNhap)
+                Ngày nhập
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SoLuong)
+                Số lượng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TrangThai)
+                Trạng thái
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NhaXuatBan)
+                Nhà xuất bản
             </th>
             <th></th>
         </tr>
@@ -46,7 +46,7 @@
                 @Html.DisplayFor(modelItem => item.TenSach)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HinhAnh)
+                <img src="~/img/@item.HinhAnh" style="width:150px;height:150px"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SoTrang)
@@ -64,12 +64,12 @@
                 @Html.DisplayFor(modelItem => item.TrangThai)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NhaXuatBan.ID_NXB)
+                @Html.DisplayFor(modelItem => item.NhaXuatBan.TenXuatBan)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID_Sach">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ID_Sach">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_Sach">Delete</a>
+@*                <a asp-action="Delete" asp-route-id="@item.ID_Sach">Delete</a>*@
             </td>
         </tr>
 }

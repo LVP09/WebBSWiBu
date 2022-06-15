@@ -19,7 +19,7 @@ namespace WebBanSach.Migrations
                     SDT = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MatKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MatKhau = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -38,7 +38,7 @@ namespace WebBanSach.Migrations
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MatKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MatKhau = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Quyen = table.Column<bool>(type: "bit", nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: false)
                 },
@@ -80,7 +80,7 @@ namespace WebBanSach.Migrations
                 columns: table => new
                 {
                     ID_TheLoai = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TenTL = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TenTL = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,11 +114,11 @@ namespace WebBanSach.Migrations
                 {
                     ID_Sach = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MaNXB = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TenSach = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenSach = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SoTrang = table.Column<int>(type: "int", nullable: false),
                     TaiBan = table.Column<int>(type: "int", nullable: false),
-                    Gia = table.Column<double>(type: "float", nullable: false),
+                    Gia = table.Column<int>(type: "int", nullable: false),
                     NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: false)
@@ -253,6 +253,12 @@ namespace WebBanSach.Migrations
                 column: "MaNXB");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sach_TenSach_TaiBan_MaNXB",
+                table: "Sach",
+                columns: new[] { "TenSach", "TaiBan", "MaNXB" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SachCT_MaSach",
                 table: "SachCT",
                 column: "MaSach");
@@ -266,6 +272,12 @@ namespace WebBanSach.Migrations
                 name: "IX_SachCT_MaTheLoai",
                 table: "SachCT",
                 column: "MaTheLoai");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TheLoai_TenTL",
+                table: "TheLoai",
+                column: "TenTL",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

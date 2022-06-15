@@ -1,56 +1,78 @@
-﻿<header>
+﻿@using Microsoft.AspNetCore.Http
+@using WebBanSach.Helpers;
+
+<header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebBanSach</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Trangchu">WebBanSach</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Trangchu">Home</a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="nav-link text-dark" asp-area="" asp-controller="Saches" asp-action="Index">Sách</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Hoadon" asp-action="Index">Hóa đơn</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Nhanviens" asp-action="Index">Nhân viên</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Nhaxuatbans" asp-action="Index">Nhà xuất bản</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="GioHangs" asp-action="Index"><i class="bi bi-cart2"></i></a>
+            }
+
+            @{
+                bool nv = true;
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("KhachHang"))
+                    {
+                        <a class="nav-item">Khách: @ViewBag.User</a>
+                    }
+                    else
+                    {
+                        <a class="nav-item">Nhân viên: @ViewBag.User</a>
+                    }
+                    if (User.IsInRole("KhachHang"))
+                    {
+                         <a class="nav-link text-dark" asp-area="" asp-controller="GioHangs" asp-action="Index"><i class="bi bi-cart2"></i></a>
+                        nv = false;
+                         <a class="site-cart text-danger">
+                            <span class="icon icon-shopping_cart"></span>
+                            <span class="count" id="cart_count">
+                                @{
+                                    var data = Context.Session.Get<List<GioHang>>("giohang");
+                                    if (data == null)
+                                    {
+                                        data = new List<GioHang>();
+                                    }
+                                }
+                                (@data.Count())
+                            </span>
+                        </a>     
+                    }
+                    <a class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Đăng xuất</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-controller="Login" asp-action="ChangePw" asp-route-nv="@nv">Đổi mật khẩu</a>
+                            <a class="dropdown-item" asp-controller="Login" asp-action="Logout">Đăng xuất</a>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <a class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Đăng nhập</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-controller="Login" asp-action="Login" asp-route-nv="false">Người dùng</a>
+                            <a class="dropdown-item" asp-controller="Login" asp-action="Login" asp-route-nv="true">Nhân viên</a>
+                        </div>
+                    </a>
+                }
+            }
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                </ul>
                 <ul class="navbar-nav d-flex flex-row-reverse">
-                    @{
-                        bool nv = true;
-                        if (User.Identity.IsAuthenticated)
-                        {
-                            if (User.IsInRole("KhachHang"))
-                            {
-                                <li class="nav-item">Khách: @ViewBag.User</li>
-                            }
-                            else
-                            {
-                                <li class="nav-item">Nhân viên: @ViewBag.User</li>
-                            }
-                            if (User.IsInRole("KhachHang"))
-                            {
-                                nv = false;
-                            }
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Đăng xuất</a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-controller="Login" asp-action="ChangePw" asp-route-nv="@nv">Đổi mật khẩu</a>
-                                    <a class="dropdown-item" asp-controller="Login" asp-action="Logout">Đăng xuất</a>
-                                </div>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Đăng nhập</a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-controller="Login" asp-action="Login" asp-route-nv="false">Người dùng</a>
-                                    <a class="dropdown-item" asp-controller="Login" asp-action="Login" asp-route-nv="true">Nhân viên</a>
-                                </div>
-                            </li>
-                        }
-                    }
+                    <li>
+                       
+                    </li>
                 </ul>
             </div>
         </div>

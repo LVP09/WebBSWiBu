@@ -15,6 +15,11 @@ namespace WebBanSach.Data
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
+            modelbuilder.Entity<TheLoai>().HasIndex(c => c.TenTL).IsUnique();
+            modelbuilder.Entity<KhachHang>().HasIndex(c => c.Email).IsUnique();
+            modelbuilder.Entity<NhanVien>().HasIndex(c => c.Email).IsUnique();
+            modelbuilder.Entity<NhaXuatBan>().HasIndex(c => c.TenXuatBan).IsUnique();
+            modelbuilder.Entity<Sach>().HasIndex(c => new {c.TenSach,c.TaiBan,c.MaNXB}).IsUnique();
         }
         public DbSet<HoaDon> HoaDons { get; set; }
         public DbSet<HoaDonCT> HoaDonCTs { get; set; }

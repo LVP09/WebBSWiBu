@@ -7,10 +7,10 @@ namespace WebBanSach.Models
     public class NhaXuatBan
     {
         [Key]
-        [Required]
         public string ID_NXB { get; set; }
         public string TenXuatBan { get; set; }
+        [Range(0,1)]
         public int TrangThai { get; set; }
-        public virtual ICollection<Sach> Sachs { get; set; }
+        public virtual ICollection<Sach>? Sachs { get; set; }
     }
 }

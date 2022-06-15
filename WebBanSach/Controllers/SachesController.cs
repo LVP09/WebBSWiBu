@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ using WebBanSach.Models;
 
 namespace WebBanSach.Views
 {
+    [Authorize(Policy = "AdminOnly")]
+    //[Authorize(AuthenticationSchemes = "MyCookie")]
     public class SachesController : Controller
     {
         private readonly dbcontext _context;
@@ -83,7 +86,7 @@ namespace WebBanSach.Views
             MultiDropDownListViewModel model = new();
             ViewBag.IDTL =  model.ItemList = GetTL().Select(x => new SelectListItem { Text = x.TenTL, Value = x.ID_TheLoai.ToString() }).ToList();
         
-
+            
             ViewBag.IDNXB = new SelectList(_context.NhaXuatBans, "ID_NXB", "TenXuatBan");
          
             ViewBag.IDTG = model.ItemList = GetTG().Select(x => new SelectListItem { Text = x.HoVaTen, Value = x.ID_TacGia.ToString() }).ToList();
@@ -99,31 +102,38 @@ namespace WebBanSach.Views
         {
             if (sach != null)
             {
-                sach.ID_Sach = Guid.NewGuid().ToString();
-                sach.TrangThai = 1;
-                sach.NgayNhap = DateTime.Now;
-                _context.Add(sach);
-                foreach (var tgx in SelectedIdsTG)
+                try
                 {
-                    foreach (var tlx in SelectedIdsTL)
+                    sach.ID_Sach = Guid.NewGuid().ToString();
+                    sach.TrangThai = 1;
+                    sach.NgayNhap = DateTime.Now;
+                    _context.Add(sach);
+                    foreach (var tgx in SelectedIdsTG)
                     {
-                        SachCT sachCT = new SachCT();
-                        sachCT.ID_SachCT = Guid.NewGuid().ToString();
-                        sachCT.MaTacGia = tgx;
-                        sachCT.MaTheLoai = tlx;
-                        sachCT.TrangThai = 1;
-                        sachCT.MaSach = sach.ID_Sach;
-                        _context.Add(sachCT);
+                        foreach (var tlx in SelectedIdsTL)
+                        {
+                            SachCT sachCT = new SachCT();
+                            sachCT.ID_SachCT = Guid.NewGuid().ToString();
+                            sachCT.MaTacGia = tgx;
+                            sachCT.MaTheLoai = tlx;
+                            sachCT.TrangThai = 1;
+                            sachCT.MaSach = sach.ID_Sach;
+                            _context.Add(sachCT);
+                        }
                     }
-                }
-                await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index)); 
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("Error", "Something went wrong");
+                    ViewBag.IDNXB = new SelectList(_context.NhaXuatBans, "ID_NXB", "TenXuatBan", sach.MaNXB);
+                    return View(sach);
+                }
             }
 
             ViewBag.IDNXB = new SelectList(_context.NhaXuatBans, "ID_NXB", "TenXuatBan", sach.MaNXB);
-           
-
             return View(sach);
         }
 
@@ -152,14 +162,14 @@ namespace WebBanSach.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, /*[Bind("ID_Sach,MaNXB,TenSach,HinhAnh,SoTrang,TaiBan,Gia,NgayNhap,SoLuong,TrangThai")] */Sach sach, string[] SelectedIdsTL, string[] SelectedIdsTG)
+        public async Task<IActionResult> Edit(string id, [Bind("ID_Sach,MaNXB,TenSach,HinhAnh,SoTrang,TaiBan,Gia,NgayNhap,SoLuong,TrangThai")] Sach sach, string[] SelectedIdsTL, string[] SelectedIdsTG)
         {
             if (id != sach.ID_Sach)
             {
                 return NotFound();
             }
-            if (sach != null)
-            {             
+            if (ModelState.IsValid)
+            {
                 try
                 {
                     foreach (var item in SelectedIdsTG)
@@ -188,7 +198,7 @@ namespace WebBanSach.Views
                     _context.Update(sach);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException)
                 {
                     if (!SachExists(sach.ID_Sach))
                     {
@@ -196,7 +206,8 @@ namespace WebBanSach.Views
                     }
                     else
                     {
-                        throw;
+                        ModelState.AddModelError("Error","Something went wrong");
+                        return View(sach);
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -206,42 +217,42 @@ namespace WebBanSach.Views
         }
 
         // GET: Saches/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || _context.Sachs == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(string id)
+        //{
+        //    if (id == null || _context.Sachs == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var sach = await _context.Sachs
-                .Include(s => s.NhaXuatBan)
-                .FirstOrDefaultAsync(m => m.ID_Sach == id);
-            if (sach == null)
-            {
-                return NotFound();
-            }
+        //    var sach = await _context.Sachs
+        //        .Include(s => s.NhaXuatBan)
+        //        .FirstOrDefaultAsync(m => m.ID_Sach == id);
+        //    if (sach == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(sach);
-        }
+        //    return View(sach);
+        //}
 
-        // POST: Saches/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            if (_context.Sachs == null)
-            {
-                return Problem("Entity set 'dbcontext.Sachs'  is null.");
-            }
-            var sach = await _context.Sachs.FindAsync(id);
-            if (sach != null)
-            {
-                _context.Sachs.Remove(sach);
-            }
+        //// POST: Saches/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(string id)
+        //{
+        //    if (_context.Sachs == null)
+        //    {
+        //        return Problem("Entity set 'dbcontext.Sachs'  is null.");
+        //    }
+        //    var sach = await _context.Sachs.FindAsync(id);
+        //    if (sach != null)
+        //    {
+        //        _context.Sachs.Remove(sach);
+        //    }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool SachExists(string id)
         {

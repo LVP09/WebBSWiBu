@@ -12,6 +12,7 @@ namespace WebBanSach.Models
         public string MaKH { get; set; }
         public DateTime NgayMua { get; set; }
         public double TongTien { get; set; }
+        [Range(0, 1)]
         public int TrangThai { get; set; }
         public virtual KhachHang KhachHang { get; set; }
     }

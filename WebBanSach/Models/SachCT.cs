@@ -15,6 +15,7 @@ namespace WebBanSach.Models
         public string MaTheLoai { get; set; }
         [ForeignKey("TacGia")]
         public string MaTacGia { get; set; }
+        [Range(0, 1)]
         public int TrangThai { get; set; }
         public virtual Sach Sach { get; set; }
         public virtual TheLoai TheLoai { get; set; }

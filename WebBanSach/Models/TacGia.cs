@@ -11,7 +11,8 @@ namespace WebBanSach.Models
         public string HoVaTen { get; set; }
         public DateTime NgaySinh { get; set; }
         public string QueQuan { get; set; }
+        [Range(0, 1)]
         public int TrangThai { get; set; }
-        public virtual ICollection<SachCT> SachCTs { get; set; }
+        public virtual ICollection<SachCT>? SachCTs { get; set; }
     }
 }

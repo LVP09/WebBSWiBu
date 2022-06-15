@@ -12,8 +12,8 @@ using WebBanSach.Data;
 namespace WebBanSach.Migrations
 {
     [DbContext(typeof(dbcontext))]
-    [Migration("20220531203520_v1")]
-    partial class v1
+    [Migration("20220614165709_v3")]
+    partial class v3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -85,7 +85,7 @@ namespace WebBanSach.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("HoVaTen")
                         .IsRequired()
@@ -93,7 +93,8 @@ namespace WebBanSach.Migrations
 
                     b.Property<string>("MatKhau")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("NgaySinh")
                         .HasColumnType("datetime2");
@@ -106,6 +107,9 @@ namespace WebBanSach.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID_KhachHang");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("KhachHang");
                 });
@@ -155,7 +159,7 @@ namespace WebBanSach.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("HinhAnh")
                         .IsRequired()
@@ -167,7 +171,8 @@ namespace WebBanSach.Migrations
 
                     b.Property<string>("MatKhau")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("NgaySinh")
                         .HasColumnType("datetime2");
@@ -184,6 +189,9 @@ namespace WebBanSach.Migrations
 
                     b.HasKey("ID_NhanVien");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("NhanVien");
                 });
 
@@ -194,12 +202,15 @@ namespace WebBanSach.Migrations
 
                     b.Property<string>("TenXuatBan")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("TrangThai")
                         .HasColumnType("int");
 
                     b.HasKey("ID_NXB");
+
+                    b.HasIndex("TenXuatBan")
+                        .IsUnique();
 
                     b.ToTable("NhaXuatBan");
                 });
@@ -209,8 +220,8 @@ namespace WebBanSach.Migrations
                     b.Property<string>("ID_Sach")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<double>("Gia")
-                        .HasColumnType("float");
+                    b.Property<int>("Gia")
+                        .HasColumnType("int");
 
                     b.Property<string>("HinhAnh")
                         .IsRequired()
@@ -234,7 +245,7 @@ namespace WebBanSach.Migrations
 
                     b.Property<string>("TenSach")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("TrangThai")
                         .HasColumnType("int");
@@ -242,6 +253,9 @@ namespace WebBanSach.Migrations
                     b.HasKey("ID_Sach");
 
                     b.HasIndex("MaNXB");
+
+                    b.HasIndex("TenSach", "TaiBan", "MaNXB")
+                        .IsUnique();
 
                     b.ToTable("Sach");
                 });
@@ -308,9 +322,12 @@ namespace WebBanSach.Migrations
 
                     b.Property<string>("TenTL")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID_TheLoai");
+
+                    b.HasIndex("TenTL")
+                        .IsUnique();
 
                     b.ToTable("TheLoai");
                 });

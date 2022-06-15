@@ -9,6 +9,6 @@ namespace WebBanSach.Models
         [Key]
         public string ID_TheLoai { get; set; }
         public string TenTL { get; set; }
-        public virtual ICollection<SachCT> SachCTs { get; set; }
+        public virtual ICollection<SachCT>? SachCTs { get; set; }
     }
 }

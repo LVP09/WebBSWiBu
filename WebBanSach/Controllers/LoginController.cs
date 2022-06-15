@@ -21,12 +21,20 @@ namespace WebBanSach.Controllers
         }
         public IActionResult Login(bool nv)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             ViewBag.nv = nv;
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Login(UserLogin userLogin, bool nv)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             ViewBag.nv = nv;
             if (ModelState.IsValid)
             {
@@ -37,10 +45,9 @@ namespace WebBanSach.Controllers
                         var claims = new List<Claim>()
                         {
                             new Claim(ClaimTypes.Name, userLogin.User),
-                            new Claim("Name", "Mr.Anderson"),
                             new Claim(ClaimTypes.Role, "KhachHang")
                         };
-                        var identity = new ClaimsIdentity(claims, "MyCookie");
+                        var identity = new ClaimsIdentity(claims, "MyCookie");  
                         ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                         await HttpContext.SignInAsync("MyCookie", principal);
                         return RedirectToAction("Index", "Home");
@@ -57,7 +64,7 @@ namespace WebBanSach.Controllers
                         var claims = new List<Claim>()
                         {
                             new Claim(ClaimTypes.Name, userLogin.User),
-                            new Claim("Name", "Agent Smith")
+                            new Claim("Name", userLogin.User)
                         };
                         if (_db.NhanViens.FirstOrDefault(c => c.Email == userLogin.User).Quyen)
                         {
@@ -68,8 +75,18 @@ namespace WebBanSach.Controllers
                             claims.Add(new Claim(ClaimTypes.Role, "NhanVien"));
                         }
                         var identity = new ClaimsIdentity(claims, "MyCookie");
-                        ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-                        await HttpContext.SignInAsync("MyCookie", principal);
+                        var c = new List<Claim>()
+                        {
+                             new Claim("Sth", "Sth")
+                        };
+                        var i2 = new ClaimsIdentity(c, "MyCookie");
+                        var lst = new List<ClaimsIdentity>() { identity, i2 };
+                        ClaimsPrincipal principal = new ClaimsPrincipal(lst);
+                        var auth = new AuthenticationProperties()
+                        {
+                            IsPersistent = true
+                        };
+                        await HttpContext.SignInAsync("MyCookie", principal, auth);
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -77,16 +94,27 @@ namespace WebBanSach.Controllers
                         ModelState.AddModelError("", "Đăng nhập thất bại");
                     }
                 }
-                
             }
             return View(userLogin);
         }
+
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("MyCookie");
             return RedirectToAction("Index", "Home");
         }
-        public IActionResult ChangePw(bool nv, string? p1, string? p2, string? p3)
+
+        [Authorize]
+        public IActionResult ChangePw(bool nv)
+        {
+            ViewBag.nv = nv;
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult ChangePw(bool nv, string p1, string p2, string p3)
         {
             ViewBag.nv = nv;
             dynamic a;
@@ -104,10 +132,11 @@ namespace WebBanSach.Controllers
                 a.MatKhau = p2;
                 _db.Update(a);
                 _db.SaveChanges();
+                return Content("Done");
             }
-            if (p2 != p3)
+            else
             {
-                return Content("good");
+                ModelState.AddModelError("Error", "Something wrong");
             }
             return View();
         }
