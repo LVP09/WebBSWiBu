@@ -12,7 +12,23 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="Hoadon" asp-action="Index">Hóa đơn</a>
                 <a class="nav-link text-dark" asp-area="" asp-controller="Nhanviens" asp-action="Index">Nhân viên</a>
                 <a class="nav-link text-dark" asp-area="" asp-controller="Nhaxuatbans" asp-action="Index">Nhà xuất bản</a>
+                  <li class="nav-item dropdown  btn">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Kho
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a asp-area="" asp-controller="NhapKho" asp-action="nhapkho" class="dropdown-item">Nhập Kho </a></li>
+                        <li><a asp-area="" asp-controller="NhapKho" asp-action="tongnhap" class="dropdown-item">Tổng Nhập kho</a></li>
+                         <li><a asp-area="" asp-controller="TonKho" asp-action="Index" class="dropdown-item">Tồn kho</a></li>
+                    </ul>
+                </li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="ThongKe" asp-action="Index">Thống kê</a>
                 <a class="nav-link text-dark" asp-area="" asp-controller="GioHangs" asp-action="Index"><i class="bi bi-cart2"></i></a>
+
+
+              
+                
+
             }
 
             @{
@@ -29,9 +45,9 @@
                     }
                     if (User.IsInRole("KhachHang"))
                     {
-                         <a class="nav-link text-dark" asp-area="" asp-controller="GioHangs" asp-action="Index"><i class="bi bi-cart2"></i></a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="GioHangs" asp-action="Index"><i class="bi bi-cart2"></i></a>
                         nv = false;
-                         <a class="site-cart text-danger">
+                        <a class="site-cart text-danger">
                             <span class="icon icon-shopping_cart"></span>
                             <span class="count" id="cart_count">
                                 @{
@@ -43,7 +59,7 @@
                                 }
                                 (@data.Count())
                             </span>
-                        </a>     
+                        </a>
                     }
                     <a class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Đăng xuất</a>
@@ -71,7 +87,7 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav d-flex flex-row-reverse">
                     <li>
-                       
+
                     </li>
                 </ul>
             </div>
