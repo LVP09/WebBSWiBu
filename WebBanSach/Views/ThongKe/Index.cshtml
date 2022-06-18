@@ -1,15 +1,31 @@
-﻿@model IEnumerable<WebBanSach.ModelGhep.Thongke>
+﻿@using WebBanSach.ModelGhep
+@model IEnumerable<WebBanSach.ModelGhep.Thongke>
+
 @{
+    
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    int[] a = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
+
+    var a = ViewBag.Bieudo;
+     DateTime start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            DateTime end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var res = Enumerable
+                .Range(0, 1 + (end - start).Days)
+                .Select(x => start.AddDays(x))
+                .GroupJoin(Model,
+                    dt => dt, o => o.hoaDon.NgayMua.Date,
+
+                    (dt, orders) => new OrderDateSummary { Date = dt, Total = orders.Sum(c => c.hoaDon.TongTien) }).ToList();
+   
+
 }
 @{
-    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(a).ToString();
+
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(@res.Select(c=>c.Date.Day));
 
 
-    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.hoaDon.TongTien));
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(@res.Select(c=>c.Total));
 
     ViewData["Title"] = "Line Chart";
 }
