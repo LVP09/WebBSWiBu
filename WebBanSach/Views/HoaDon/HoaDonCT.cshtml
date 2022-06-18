@@ -8,12 +8,12 @@
 <form asp-controller="HoaDon" asp-action="HoaDonCT" method="post">
     <p>
         Tìm kiếm: <input  type="text" name="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
-      <p>
-        Ngày bắt đầu : <input  type="datetime" name="star" />
-        Ngày kết thúc :<input  type="datetime" name="end" />
-        <input type="submit" value="TÌM" />
+        <input type="submit" value="Tìm" class="btn btn-primary"/>
+   @* </p>
+     <p>*@
+        Ngày bắt đầu : <input  type="date" name="star" />
+        Ngày kết thúc :<input   type="date" name="end" />
+        <input type="submit" value="TÌM"  class="btn btn-primary" />
     </p>
 </form>
 <table class="table">
