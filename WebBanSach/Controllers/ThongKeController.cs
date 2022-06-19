@@ -89,7 +89,7 @@ namespace WebBanSach.Controllers
             worksheet.Cell(currentRow, 4).Value = "Tổng tiền";
 
 
-            foreach (var x in _lstThongKe.Where(c => c.hoaDon.NgayMua.Day == DateTime.Now.Day))
+            foreach (var x in _lstThongKe.Where(c => c.hoaDon.NgayMua.Day == DateTime.Now.Day && c.hoaDon.NgayMua.Month== DateTime.Now.Month && c.hoaDon.NgayMua.Year == DateTime.Now.Year))
             {
                 currentRow++;
 
@@ -118,7 +118,7 @@ namespace WebBanSach.Controllers
             worksheet.Cell(currentRow, 4).Value = "Tổng tiền";
 
 
-            foreach (var x in _lstThongKe.Where(c => c.hoaDon.NgayMua.Month == DateTime.Now.Month))
+            foreach (var x in _lstThongKe.Where(c => c.hoaDon.NgayMua.Month == DateTime.Now.Month &&  c.hoaDon.NgayMua.Day == DateTime.Now.Day))
             {
                 currentRow++;
 

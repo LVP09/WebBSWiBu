@@ -122,7 +122,7 @@
             {
                 <tr>
                     <td>
-                        <img src="/Img/@item.sach.HinhAnh">
+                        <img width="100px" src="/Img/@item.sach.HinhAnh">
 
                     </td>
                     <td>
@@ -132,7 +132,7 @@
                         @Html.DisplayFor(modelItem => item.kho.SoLuong )
                     </td>
                     <td>
-                        chưa có
+                            @String.Format("{0:#,##0.##}", item.kho.GiaNhap * item.kho.SoLuong)   
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.nhaXuatBan.TenXuatBan)
