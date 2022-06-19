@@ -93,7 +93,7 @@
                 <div class="card card-input">
                     <div class="card-body">
                         <p class="text-uppercase fw-bold text-muted">Số đơn hàng</p>
-                        <p class="h2 fw-bold">@Model.Count()   </p>
+                        <p class="h2 fw-bold">@Model.Select(c=>c.hoaDon).Count()   </p>
 
                     </div>
                 </div>
