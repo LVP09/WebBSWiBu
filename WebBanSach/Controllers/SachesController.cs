@@ -110,14 +110,14 @@ namespace WebBanSach.Views
             {
                 try
                 {
-
+                    var nv = _context.NhanViens.Where(c => c.Email == User.Identity.Name).FirstOrDefault();
                     sach.ID_Sach = Guid.NewGuid().ToString();
                     sach.TrangThai = 1;
                     sach.NgayNhap = DateTime.Now;
                     _context.Add(sach);
                     //cường code
                     _kho.ID_Kho = Guid.NewGuid().ToString();
-                    _kho.MaNhanVien = "001";
+                    _kho.MaNhanVien = nv.ID_NhanVien;
                     _kho.MaSach = sach.ID_Sach;
                     _kho.SoLuong = sach.SoLuong;
                     _kho.NgayNhap = sach.NgayNhap;
@@ -145,7 +145,7 @@ namespace WebBanSach.Views
                 }
                 catch (DbUpdateException)
                 {
-                    ModelState.AddModelError("Error", "Something went wrong");
+                    //ModelState.AddModelError("Error", "Something went wrong");
                     ViewBag.IDNXB = new SelectList(_context.NhaXuatBans, "ID_NXB", "TenXuatBan", sach.MaNXB);
                     return View(sach);
                 }

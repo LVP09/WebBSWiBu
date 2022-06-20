@@ -36,37 +36,39 @@
 
                     <div class="span9">
                         <div class="row">
-                            @foreach (var item in ViewBag.TacGia)
-                            {
+                           
                                 <div class="span4">
                                     <a href="#" class="thumbnail" data-fancybox-group="group1" title="Description 1"><img alt="" src="~/img/@Model.HinhAnh"></a>
                                 </div>
                                 <div class="span5">
                                     <address>
-                                        <strong>Book name:</strong><span>@Model.TenSach</span><br>
-                                        <strong>Number of pages:</strong> <span>@Model.SoTrang</span><br>
-                                        <strong>Republish:</strong> <span>@Model.TaiBan</span><br>
-                                        <strong>Amount:</strong> <span>@Model.SoLuong</span><br><strong>Tác Giả:</strong> <span>@item.HoVaTen</span><br>
+                                        <strong>Tên sách:</strong><span>@Model.TenSach</span><br>
+                                        <strong>Số trang:</strong> <span>@Model.SoTrang</span><br>
+                                        <strong>Tái bản:</strong> <span>@Model.TaiBan</span><br>
+                                        <strong>Số lượng:</strong> <span>@Model.SoLuong</span><br>
+                                         
+                                        <strong>Tác Giả:</strong>@foreach (var item in ViewBag.TacGia)
+                                              { <span>@item.HoVaTen,</span><br>}
                                     </address>
-                                    <h4><strong>Price: $@Model.Gia</strong></h4>
+                                    <h4><strong>Giá: @Model.Gia.ToString("#,##0").Replace(',', '.') VNĐ </strong></h4>
                                 </div>
-                            }
+                            <hr />
                             <div class="span5">
-                                <form class="form-inline">
-                                    <label class="checkbox">
-                                        <input type="checkbox" value=""> Option one is this and that
-                                    </label>
-                                    <br />
-                                    <label class="checkbox">
-                                        <input type="checkbox" value=""> Be sure to include why it's great
-                                    </label>
-                                    <p>&nbsp;</p>
-                                    Số lượng mua:   <input type="number" name="SoLuong" min="1" step="1" id="number" max="@Model.SoLuong" value="1" />
+                                <form class="form-inline">                                 
+                                  
                                     @if (User.Identity.IsAuthenticated)
                                     {
                                         if (User.IsInRole("KhachHang"))
                                         {
+                                            @if (@Model.SoLuong > 1)
+                                            {
+                                                 <p>  Số lượng mua:   <input type="number" name="SoLuong" min="1" step="1" id="number" max="@Model.SoLuong" value="1" /></p>
                                             <button class="btn btn-inverse" type="submit">Add to cart</button>
+                                            }else
+                                            {
+                                                <h3 class="text-danger">Hết hàng </h3>
+                                            }
+                                           
                                         }
                                     }
                                     else
@@ -77,29 +79,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="span9">
-                                <ul class="nav nav-tabs" id="myTab">
-                                    <li class="active"><a href="#home">Description</a></li>
-                                    <li class=""><a href="#profile">Additional Information</a></li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="home">text</div>
-                                    <div class="tab-pane" id="profile">
-                                        <table class="table table-striped shop_attributes">
-                                            <tbody>
-                                                <tr class="">
-                                                    <th>Size</th>
-                                                    <td>Large, Medium, Small, X-Large</td>
-                                                </tr>
-                                                <tr class="alt">
-                                                    <th>Colour</th>
-                                                    <td>Orange, Yellow</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="span9">
                                 <br>
                                 <h4 class="title">

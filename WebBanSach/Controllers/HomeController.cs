@@ -64,7 +64,7 @@ namespace WebBanSach.Controllers
         {
             List<TheLoai> lstTl = new List<TheLoai>();
             List<Sach> LstSeachbook = new List<Sach>();
-            var lstProdust = _DB.Sachs.ToList().Where(c => c.SoLuong > 0 && c.TrangThai == 1);// List ALL sách
+            var lstProdust = _DB.Sachs.ToList().Where(c=> c.TrangThai == 1);// List ALL sách
             //FiterTL = _DB.SachCTs.Where(c => c.MaTheLoai == idTL).ToList();//lọc theo thể loại
             LstSeachbook = _DB.Sachs.Where(c => c.TenSach.Contains(NameBook)).ToList();// Tìm kiếm theo tên sách
             lstTl = _DB.TheLoais.ToList();// list thể loại

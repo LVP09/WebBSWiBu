@@ -12,6 +12,7 @@ namespace WebBanSach.Models
         public string ID_Sach { get; set; }
         [ForeignKey("NhaXuatBan")]
         public string MaNXB { get; set; }
+
         public string TenSach { get; set; }
         public string HinhAnh { get; set; }
         [Range(1, 1000000)]
