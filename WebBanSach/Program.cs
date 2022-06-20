@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 var build = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", false);
 IConfiguration configuration = build.Build();
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LVP-09\\SQLEXPRESS;Initial Catalog=WebBanSachs;User ID=Phong09;Password=ph01248460961;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=WebBanSach;User ID=hung;Password=hung;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
 builder.Services.AddMvc().AddSessionStateTempDataProvider();
 builder.Services.AddAuthentication("MyCookie").AddCookie("MyCookie", config =>
  {

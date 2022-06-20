@@ -41,8 +41,7 @@ namespace WebBanSach.Controllers
           
             var Khs = db.KhachHangs.ToList();
            
-            var hoten = collection["HotenKH"];
-           
+            var tendn = collection["TenDN"];
             var matkhau = collection["Matkhau"];
             var matkhaunhaplai = collection["Matkhaunhaplai"];
             var email = collection["Email"];
@@ -50,49 +49,52 @@ namespace WebBanSach.Controllers
             var dienthoai = collection["Dienthoai"];
             var trangthai = collection["Trangthai"];
             var ngaysinh = String.Format("{0:mm/dd/yyyy}", collection["Ngaysinh"]);
-            foreach (var item in Khs)
+            if (String.IsNullOrEmpty(tendn))
             {
-                if (item.Email == email)
-                {
-                    ViewData["Loi5"] = "Email Đã tồn tại";
-                    return RedirectToAction("Dangky", "User");
-                }
+                ViewData["Loi2"] = "Tài khoản không được để trống";
+                return View();
             }
-            if (String.IsNullOrEmpty(hoten))
-            {
-                ViewData["Loi1"] = "Họ tên không được để trống";
-            }
-           
             if (String.IsNullOrEmpty(matkhau))
             {
                 ViewData["Loi3"] = "Mật khẩu không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(matkhaunhaplai))
             {
                 ViewData["Loi4"] = "Mật khẩu nhập lại không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(email))
             {
                 ViewData["Loi5"] = "Email không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(dienthoai))
             {
                 ViewData["Loi6"] = "SDT không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(diachi))
             {
                 ViewData["Loi7"] = "Địa chỉ không được để trống";
+                return View();
+            }
+            if (db.KhachHangs.ToList().Exists(c => c.Email == email))
+            {
+                ViewData["Loi10"] = "Email đã tồn tại";
+                return View();
             }
             if (String.IsNullOrEmpty(dienthoai))
             {
                 ViewData["Loi8"] = "Trạng thái không được để trống";
+                return View();
             }
             
             else
             {
                 //Gán vào data
                 kh.ID_KhachHang = Guid.NewGuid().ToString();
-                kh.HoVaTen = hoten;
+                kh.HoVaTen = tendn;
                 kh.Email = email;
                 kh.MatKhau = matkhau;
                 kh.DiaChi = diachi;
@@ -101,7 +103,7 @@ namespace WebBanSach.Controllers
                 kh.TrangThai = 1;
                 db.KhachHangs.Add(kh);
                 db.SaveChanges();
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Login","Login");
             }
             return Dangky();
         }

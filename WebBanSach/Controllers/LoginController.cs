@@ -114,7 +114,7 @@ namespace WebBanSach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult ChangePw(bool nv, string p1, string p2, string p3)
+        public IActionResult ChangePw(bool nv, string p1, Password p2, string p3)
         {
             ViewBag.nv = nv;
             dynamic a;
@@ -127,9 +127,9 @@ namespace WebBanSach.Controllers
             {
                 a = _db.KhachHangs.ToList().FirstOrDefault(c => c.Email == HttpContext.User.Identity.Name);
             }
-            if (a.MatKhau == p1 && p2 == p3 && p2 != null)
+            if (ModelState.IsValid && a.MatKhau == p1 && p2.pw == p3 && p2 != null)
             {
-                a.MatKhau = p2;
+                a.MatKhau = p2.pw;
                 _db.Update(a);
                 _db.SaveChanges();
                 return Content("Done");
