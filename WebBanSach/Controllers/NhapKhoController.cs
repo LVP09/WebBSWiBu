@@ -78,7 +78,7 @@ namespace WebBanSach.Controllers
             if (nxb !=null)
             {
                 sanPhamviews();
-                _lstsanPhamviews = _lstsanPhamviews.Where(c => c.sach.TenSach.ToLower().Contains(nxb)).ToList();
+                _lstsanPhamviews = _lstsanPhamviews.Where(c => c.sach.TenSach.ToLower().Contains(nxb) && c.kho.NgayNhap.Month==DateTime.Now.Month && c.kho.NgayNhap.Year==DateTime.Now.Year).ToList();
                 return View(_lstsanPhamviews);
             }
              if(theongay!=null)
@@ -105,7 +105,7 @@ namespace WebBanSach.Controllers
             else
             {
               
-                return View(_lstsanPhamviews);
+                return View(_lstsanPhamviews.Where(c=> c.kho.NgayNhap.Month == DateTime.Now.Month && c.kho.NgayNhap.Year == DateTime.Now.Year).ToList());
             }
 
 

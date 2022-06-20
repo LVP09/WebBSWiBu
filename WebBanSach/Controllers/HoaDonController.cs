@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebBanSach.Data;
 using WebBanSach.Models;
 using WebBanSach.ModelView;
@@ -34,6 +35,46 @@ namespace WebBanSach.Controllers
             _listSCT = new List<SachCT>();
 
         }
+        public ActionResult Sua(string dd, string name)
+        {
+
+            if (dd == null || name == null)
+            {
+                return NotFound();
+            }
+            var i = _db.HoaDons.Where(c => c.ID_HoaDon == dd).FirstOrDefault();
+
+            if (name == "1")
+            {
+                i.TrangThai = 1;
+
+
+            }
+            else if (name == "2")
+            {
+                i.TrangThai = 0;
+
+            }
+            else
+            {
+                i.TrangThai = 2;
+            }
+            _db.Update(i);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+
+
+
+
+
+
+
+
+            //return View(listhd());
+
+
+
+        }
         // GET: HoaDonController
         public ActionResult Index(string SearchString, DateTime? star, DateTime? end)
         {
@@ -41,31 +82,22 @@ namespace WebBanSach.Controllers
             _listHDCT = _db.HoaDonCTs.ToList();
             _listKH = _db.KhachHangs.ToList();
             _listS = _db.Sachs.ToList();
-            _listTL = _db.TheLoais.ToList();
-            _listNXB = _db.NhaXuatBans.ToList();
-            _listTG = _db.TacGias.ToList();
-            _listSCT = _db.SachCTs.ToList();
 
             var listviewhd = (from a in _listHD
                               join b in _listHDCT on a.ID_HoaDon equals b.MaHoaDon
                               join d in _listKH on a.MaKH equals d.ID_KhachHang
                               join c in _listS on b.MaSach equals c.ID_Sach
-                              join v in _listSCT on c.ID_Sach equals v.MaSach
-                              join n in _listTG on v.MaTacGia equals n.ID_TacGia
-                              join m in _listTL on v.MaTheLoai equals m.ID_TheLoai
-                              join k in _listNXB on c.MaNXB equals k.ID_NXB
+
                               select new ViewHoaDon()
                               {
                                   hoaDon = a,
                                   khachHang = d,
                                   hoaDonCT = b,
-                                  sach = c,
-                                  sachCT = v,
-                                  tacGia = n,
-                                  TheLoai = m,
-                                  nhaXuatBan = k
+                                  sach = c
                               }).ToList();
-            
+            var list = listviewhd.OrderByDescending(a => a.hoaDon.NgayMua).ToList();
+
+
             if (!String.IsNullOrEmpty(SearchString))
             {
                 listviewhd = listviewhd.Where(s => s.khachHang.HoVaTen.Contains(SearchString)).ToList();
@@ -107,7 +139,9 @@ namespace WebBanSach.Controllers
                                   TheLoai = m,
                                   nhaXuatBan = k
                               }).ToList();
-         
+            var list = listviewhd.OrderByDescending(a => a.hoaDon.NgayMua).ToList();
+
+
             if (!String.IsNullOrEmpty(SearchString))
             {
                 listviewhd = listviewhd.Where(s => s.khachHang.HoVaTen.Contains(SearchString)).ToList();
@@ -121,6 +155,39 @@ namespace WebBanSach.Controllers
 
 
         }
+        public List<ViewHoaDon> listhd()
+        {
+            _listHD = _db.HoaDons.ToList();
+            _listHDCT = _db.HoaDonCTs.ToList();
+            _listKH = _db.KhachHangs.ToList();
+            _listS = _db.Sachs.ToList();
+            _listTL = _db.TheLoais.ToList();
+            _listNXB = _db.NhaXuatBans.ToList();
+            _listTG = _db.TacGias.ToList();
+            _listSCT = _db.SachCTs.ToList();
+
+            var listviewhd = (from a in _listHD
+                              join b in _listHDCT on a.ID_HoaDon equals b.MaHoaDon
+                              join d in _listKH on a.MaKH equals d.ID_KhachHang
+                              join c in _listS on b.MaSach equals c.ID_Sach
+                              join v in _listSCT on c.ID_Sach equals v.MaSach
+                              join n in _listTG on v.MaTacGia equals n.ID_TacGia
+                              join m in _listTL on v.MaTheLoai equals m.ID_TheLoai
+                              join k in _listNXB on c.MaNXB equals k.ID_NXB
+                              select new ViewHoaDon()
+                              {
+                                  hoaDon = a,
+                                  khachHang = d,
+                                  hoaDonCT = b,
+                                  sach = c,
+                                  sachCT = v,
+                                  tacGia = n,
+                                  TheLoai = m,
+                                  nhaXuatBan = k
+                              }).ToList();
+            return listviewhd;
+        }
+
 
         // GET: HoaDonController/Details/5
         public ActionResult Details(int id)

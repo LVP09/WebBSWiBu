@@ -18,7 +18,7 @@ namespace WebBanSach.Controllers
         }
 
         // GET: NhanViens
-        
+
         public async Task<IActionResult> Index(string SearchString, DateTime? star, DateTime? end)
         {
             var l = from a in _context.NhanViens select a;
@@ -37,7 +37,7 @@ namespace WebBanSach.Controllers
             return View(await l.ToListAsync());
 
         }
-       
+
 
 
         // GET: NhanViens/Details/5
@@ -118,16 +118,16 @@ namespace WebBanSach.Controllers
                 return null;
             }
         }
-    
-    // POST: NhanViens/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
 
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
+        // POST: NhanViens/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("HoVaTen,Email,SDT,DiaChi,HinhAnh,NgaySinh,MatKhau,Quyen,TrangThai")] NhanVien nhanVien, IFormFile fanh)
         {
-            if (fanh!=null)
+            if (fanh != null)
             {
                 nhanVien.HoVaTen = Totitlecase(nhanVien.HoVaTen);
                 if (fanh != null)
@@ -139,7 +139,7 @@ namespace WebBanSach.Controllers
 
                 if (string.IsNullOrEmpty(nhanVien.HinhAnh)) nhanVien.HinhAnh = "default.jpg";
                 var a = _context.NhanViens.ToList();
-                nhanVien.ID_NhanVien="NV"+a.Count;
+                nhanVien.ID_NhanVien = "NV" + a.Count;
                 _context.Add(nhanVien);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -230,14 +230,14 @@ namespace WebBanSach.Controllers
             {
                 _context.NhanViens.Remove(nhanVien);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool NhanVienExists(string id)
         {
-          return (_context.NhanViens?.Any(e => e.ID_NhanVien == id)).GetValueOrDefault();
+            return (_context.NhanViens?.Any(e => e.ID_NhanVien == id)).GetValueOrDefault();
         }
     }
 }

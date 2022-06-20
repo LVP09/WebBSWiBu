@@ -10,14 +10,14 @@
     <a asp-action="Create">Thêm Nhân viên</a>
 </p>
 <form asp-controller="NhanViens" asp-action="Index" method="post">
-    <p>
+     <p>
         Tìm kiếm: <input  type="text" name="SearchString" />
-        <input type="submit" value="TÌM KIẾM" />
-    </p>
-    <p>
-        Ngày bắt đầu : <input  type="datetime" name="star" />
-        Ngày kết thúc :<input  type="datetime" name="end" />
-        <input type="submit" value="TÌM" />
+        <input type="submit" value="Tìm" class="btn btn-primary"/>
+   @* </p>
+     <p>*@
+        Ngày bắt đầu : <input  type="date" name="star" />
+        Ngày kết thúc :<input   type="date" name="end" />
+        <input type="submit" value="TÌM"  class="btn btn-primary" />
     </p>
 </form>
 
@@ -73,7 +73,7 @@
                 @Html.DisplayFor(modelItem => item.DiaChi)
             </td>
             <td>
-                 <img src="~/images/Nhanviens/@item.HinhAnh" width="100" height="50" class="card-img-top" alt="@item.HoVaTen">
+                 <img src="~/images/Nhanviens/@item.HinhAnh" style="width:150px;height:150px" alt="@item.HoVaTen">
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NgaySinh)

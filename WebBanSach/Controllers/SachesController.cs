@@ -16,11 +16,17 @@ namespace WebBanSach.Views
     //[Authorize(AuthenticationSchemes = "MyCookie")]
     public class SachesController : Controller
     {
+        
         private readonly dbcontext _context;
+        Kho _kho;
+       List <Kho> _lstKhos;
         private DateTime aDateTime;
         public SachesController(dbcontext context)
         {
             _context = context;
+            _lstKhos = _context.Khos.ToList();
+            _kho = new Kho();
+
         }
 
         // GET: Saches
@@ -98,16 +104,28 @@ namespace WebBanSach.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID_Sach,MaNXB,TenSach,HinhAnh,SoTrang,TaiBan,Gia,NgayNhap,SoLuong,TrangThai")] Sach sach, string[] SelectedIdsTL, string[] SelectedIdsTG)
+        public async Task<IActionResult> Create([Bind("ID_Sach,MaNXB,TenSach,HinhAnh,SoTrang,TaiBan,Gia,NgayNhap,SoLuong,TrangThai")] Sach sach, string[] SelectedIdsTL, string[] SelectedIdsTG, string gianhap)
         {
             if (sach != null)
             {
                 try
                 {
+
                     sach.ID_Sach = Guid.NewGuid().ToString();
                     sach.TrangThai = 1;
                     sach.NgayNhap = DateTime.Now;
                     _context.Add(sach);
+                    //cường code
+                    _kho.ID_Kho = Guid.NewGuid().ToString();
+                    _kho.MaNhanVien = "001";
+                    _kho.MaSach = sach.ID_Sach;
+                    _kho.SoLuong = sach.SoLuong;
+                    _kho.NgayNhap = sach.NgayNhap;
+                    _kho.GiaNhap = int.Parse(gianhap);
+                    _kho.TrangThai = 1;
+                    _context.Khos.Add(_kho);
+
+
                     foreach (var tgx in SelectedIdsTG)
                     {
                         foreach (var tlx in SelectedIdsTL)

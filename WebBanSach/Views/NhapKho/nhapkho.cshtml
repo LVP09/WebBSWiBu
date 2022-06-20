@@ -29,7 +29,7 @@
                     </div>
 
                 </form>
-
+@*
                 <form class="col-4 row" asp-controller="NhapKho" asp-action="nhapkho">
                     <div class="col-5">
                         <input class="form-control" type="date" name="timerangefrom" />
@@ -40,8 +40,8 @@
                     <div class="col-2">
                        <button type="submit" class="btn btn-primary">Lọc</button>
                     </div>
-                </form>
-                <div class="col-2 row">
+                </form>*@
+                @*<div class="col-2 row">
                    <form class="col-4" asp-controller="NhapKho">
                        <button class="btn btn-primary" asp-action="nhapkho" type="submit" name="theongay" value="ok">Ngày</button>
                    </form>
@@ -52,9 +52,9 @@
                        <button class="btn btn-primary " asp-action="nhapkho" value="ok" name="theonam" type="submit">Năm</button>
                    </form>
 
-                </div>
+                </div>*@
             </div>
-
+            <h4 style="text-align: center">Nhập Kho trong tháng @DateTime.Now.Month</h4>
             <table class="table">
                 <thead>
                     <tr>
@@ -74,10 +74,10 @@
                             Giá
                         </th>
                         <th>
-                            Đã trả
+                           Số Lượng 
                         </th>
                         <th>
-                            Còn nợ
+                            Tổng giá
                         </th>
                     </tr>
                 </thead>
@@ -99,11 +99,13 @@
                                 @Html.DisplayFor(modelItem => item.sach.TaiBan )
                             </td>
                             <td>
-                                @String.Format("{0:#,##0.##}", (   @item.kho.SoLuong * @item.kho.GiaNhap)) đ
+                              @String.Format("{0:#,##0.##}", item.kho.GiaNhap )  đ
                             </td>
                             <td>
+                                @Html.DisplayFor(modelItem => item.kho.SoLuong )
                             </td>
                             <td>
+                                  @String.Format("{0:#,##0.##}", (   @item.kho.SoLuong * @item.kho.GiaNhap)) đ
                             </td>
 
 
