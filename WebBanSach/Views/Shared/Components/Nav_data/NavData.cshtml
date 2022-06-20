@@ -32,12 +32,15 @@
             }
 
             @{
+              
                 bool nv = true;
                 if (User.Identity.IsAuthenticated)
                 {
                     if (User.IsInRole("KhachHang"))
                     {
                         <a class="nav-item">Khách: @ViewBag.User</a>
+                         <a class="nav-link text-dark" asp-controller="Home" asp-action="KhachHang"> Thông tin của bạn</a>
+
                     }
                     else
                     {

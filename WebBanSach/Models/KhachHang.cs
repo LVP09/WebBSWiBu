@@ -8,6 +8,8 @@ namespace WebBanSach.Models
     {
         [Key]
         public string ID_KhachHang { get; set; }
+        [Required]
+        [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9\._\-]{0,22}?[a-zA-Z0-9]{0,2}$", ErrorMessage = "Hãy nhập username đúng format ")]
         public string HoVaTen { get; set; }
         [EmailAddress]
         public string Email { get; set; }

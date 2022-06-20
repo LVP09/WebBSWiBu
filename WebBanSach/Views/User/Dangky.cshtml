@@ -19,15 +19,7 @@
             </td>
         </tr>
 
-        <tr>
-            <td>
-                Tên đăng nhập:
-            </td>
-            <td>
-                @Html.TextBox("TenDN")
-                @ViewData["Loi2"]
-            </td>
-        </tr>
+        
 
         <tr>
             <td>
@@ -55,6 +47,7 @@
             </td>
             <td>
                 @Html.TextBox("Email")
+                  <p class="text-danger">
                 @ViewData["Loi5"]
                 @ViewData["Loi10"]
             </td>
@@ -66,6 +59,7 @@
             </td>
             <td>
                 @Html.TextBox("Dienthoai")
+              
                 @ViewData["Loi6"]
             </td>
         </tr>

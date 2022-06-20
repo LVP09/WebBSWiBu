@@ -38,9 +38,11 @@ namespace WebBanSach.Controllers
         [HttpPost]
         public ActionResult Dangky(IFormCollection collection,KhachHang kh)
         {
-            //Gán giá trị vào form
+          
+            var Khs = db.KhachHangs.ToList();
+           
             var hoten = collection["HotenKH"];
-            var tendn = collection["TenDN"];
+           
             var matkhau = collection["Matkhau"];
             var matkhaunhaplai = collection["Matkhaunhaplai"];
             var email = collection["Email"];
@@ -48,6 +50,14 @@ namespace WebBanSach.Controllers
             var dienthoai = collection["Dienthoai"];
             var trangthai = collection["Trangthai"];
             var ngaysinh = String.Format("{0:mm/dd/yyyy}", collection["Ngaysinh"]);
+            foreach (var item in Khs)
+            {
+                if (item.Email == email)
+                {
+                    ViewData["Loi5"] = "Email Đã tồn tại";
+                    return RedirectToAction("Dangky", "User");
+                }
+            }
             if (String.IsNullOrEmpty(hoten))
             {
                 ViewData["Loi1"] = "Họ tên không được để trống";
@@ -93,17 +103,18 @@ namespace WebBanSach.Controllers
                 ViewData["Loi8"] = "Trạng thái không được để trống";
                 return View();
             }
+            
             else
             {
                 //Gán vào data
-                kh.ID_KhachHang = db.KhachHangs.ToList().Count().ToString();
-                kh.HoVaTen = tendn;
+                kh.ID_KhachHang = Guid.NewGuid().ToString();
+                kh.HoVaTen = hoten;
                 kh.Email = email;
                 kh.MatKhau = matkhau;
                 kh.DiaChi = diachi;
                 kh.SDT = dienthoai;
                 kh.NgaySinh = DateTime.Parse(ngaysinh);
-                //kh.TrangThai = 1;
+                kh.TrangThai = 1;
                 db.KhachHangs.Add(kh);
                 db.SaveChanges();
                 return RedirectToAction("Login","Login");
