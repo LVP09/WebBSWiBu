@@ -51,34 +51,47 @@ namespace WebBanSach.Controllers
             if (String.IsNullOrEmpty(hoten))
             {
                 ViewData["Loi1"] = "Họ tên không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(tendn))
             {
                 ViewData["Loi2"] = "Tài khoản không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(matkhau))
             {
                 ViewData["Loi3"] = "Mật khẩu không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(matkhaunhaplai))
             {
                 ViewData["Loi4"] = "Mật khẩu nhập lại không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(email))
             {
                 ViewData["Loi5"] = "Email không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(dienthoai))
             {
                 ViewData["Loi6"] = "SDT không được để trống";
+                return View();
             }
             if (String.IsNullOrEmpty(diachi))
             {
                 ViewData["Loi7"] = "Địa chỉ không được để trống";
+                return View();
+            }
+            if (db.KhachHangs.ToList().Exists(c => c.Email == email))
+            {
+                ViewData["Loi10"] = "Email đã tồn tại";
+                return View();
             }
             if (String.IsNullOrEmpty(dienthoai))
             {
                 ViewData["Loi8"] = "Trạng thái không được để trống";
+                return View();
             }
             else
             {
@@ -93,7 +106,7 @@ namespace WebBanSach.Controllers
                 //kh.TrangThai = 1;
                 db.KhachHangs.Add(kh);
                 db.SaveChanges();
-                return RedirectToAction("KhachHangLogin");
+                return RedirectToAction("Login","Login");
             }
             return Dangky();
         }

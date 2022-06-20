@@ -1,4 +1,5 @@
 ﻿<link rel="stylesheet" href="~/css/login.css" />
+@model WebBanSach.Models.Extend.Password;
 @{
     string header;
     if (ViewBag.nv)
@@ -31,7 +32,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-control-label">MẬT KHẨU MỚI</label>
-                            <input name="p2" type="password" class="form-control">
+                            <input asp-for="pw" type="password" class="form-control">
                         </div>
                          <div class="form-group">
                             <label class="form-control-label">NHẬP LẠI MẬT KHẨU MỚI</label>
