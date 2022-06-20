@@ -23,6 +23,27 @@ namespace WebBanSach.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> KhachHang()
+        {
+            var khachhang = _DB.KhachHangs.Where(c => c.Email == User.Identity.Name).FirstOrDefault();
+
+            return View(khachhang);
+        
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> KhachHang([Bind("ID_KhachHang,Email,HoVaTen,SDT,DiaChi,NgaySinh,MatKhau,TrangThai")] KhachHang khachHang)
+        {
+            if (khachHang != null)
+            {         
+                _DB.Update(khachHang);
+                await _DB.SaveChangesAsync();
+                ViewBag.ThongBao = "Sửa thông tin thành công !";
+            }
+           
+            
+            return View(khachHang);
+        }
         public ActionResult TheLoai(string idTl)
         {
             List<SachCT> FiterTL = new List<SachCT>();
